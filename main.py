@@ -20,10 +20,9 @@ for i in data:
 
 del datas[0]  # filtered unwanted info
 del datas[-4:]  # filtered unwanted info
-for v in datas[1:]:  # filtered unwanted info
+for v in datas[1:-3]:  # filtered unwanted info
     v.pop()
     v.pop(-1)
-print(datas)
 # csv conversion
 file = open("NEPSE.csv", 'w')
 write = csv.writer(file)
@@ -32,14 +31,24 @@ for i in datas:
 file.close()
 
 
-# pandas visualization
-df = pd.read_csv('NEPSE.csv', encoding='iso-8859-1')
+# Bar Chart visualization
+df = pd.read_csv('/content/NEPSE.csv',on_bad_lines='skip')
+df = df.iloc[0:20]
 
-
-plt.style.use('_mpl-gallery')
 x = list(df['Traded Companies'])
 y = list(df['No. Of Transaction'])
 
-plt.bar(x, y)
+font = {'family' : 'monospace',
+        'weight' : 'normal',
+        'size'   : 10}
+
+plt.rc('font', **font)
+plt.xticks(rotation =90)
+plt.xlabel("Traded Companies")
+plt.ylabel("No. of Transaction")
+plt.title("No. of trasactions for top 20 Companies")
+plt.bar(x, y, width=.5)
 plt.show()
+
+
 
